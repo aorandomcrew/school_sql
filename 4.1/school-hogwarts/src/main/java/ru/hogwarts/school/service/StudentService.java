@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -57,4 +58,15 @@ public class StudentService {
                 .orElseThrow(DataNotFoundException::new);
     }
 
+    public long count(){
+        return studentRepository.count();
+    }
+
+    public double average(){
+        return studentRepository.average();
+    }
+
+    public List<Student> lastFiveStudents(int quantity){
+        return studentRepository.findLastFiveStudents(quantity);
+    }
 }
