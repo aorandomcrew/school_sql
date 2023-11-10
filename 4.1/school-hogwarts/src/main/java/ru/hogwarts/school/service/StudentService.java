@@ -1,13 +1,15 @@
 package ru.hogwarts.school.service;
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.exception.DataNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import java.util.Collection;
-import java.util.Optional;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,7 +23,7 @@ public class StudentService {
         this.facultyRepository = facultyRepository;
     }
 
-    public Student create( Student student) {
+    public Student create(Student student) {
         return studentRepository.save(student);
     }
 
@@ -40,21 +42,34 @@ public class StudentService {
 
     public Student delete(Long id) {
         Student existStudent = studentRepository.findById(id)
-                .orElseThrow(DataNotFoundException:: new);
+                .orElseThrow(DataNotFoundException::new);
         studentRepository.delete(existStudent);
         return existStudent;
     }
+
     public Collection<Student> getByAge(int age) {
         return studentRepository.findAllByAge(age);
     }
 
-    public Collection<Student> findByAgeBetween(int min, int max){
-        return studentRepository.findAllByAgeBetween(min,max);
+    public Collection<Student> findByAgeBetween(int min, int max) {
+        return studentRepository.findAllByAgeBetween(min, max);
     }
+
     public Collection<Student> findByFacultyId(Long id) {
         return facultyRepository.findById(id)
                 .map(Faculty::getStudent)
                 .orElseThrow(DataNotFoundException::new);
     }
 
+    public long count() {
+        return studentRepository.count();
+    }
+
+    public double average() {
+        return studentRepository.average();
+    }
+
+    public List<Student> lastFiveStudents(int quantity) {
+        return studentRepository.findLastFiveStudents(quantity);
+    }
 }
